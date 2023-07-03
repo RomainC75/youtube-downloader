@@ -1,27 +1,31 @@
-import express from 'express'
-import bodyParser from 'body-parser'
-import upload from './utils/multer.utils'
-import cors from 'cors'
-import { errorHandler } from './errors'
+import express, {Request, Response, NextFunction} from "express";
+import bodyParser from "body-parser";
+import upload from "./utils/multer.utils";
+import cors from "cors";
+import morgan from "morgan";
+import errorHandler from "./errors";
 
-const PORT = 3000
+const PORT = 3000;
 
-const app = express()
+const app = express();
 
-app.use(cors())
-app.use(bodyParser.urlencoded({ extended: false }))
-app.use(bodyParser.json())
+app.use(cors());
+app.use(morgan("combined"));
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
 
-app.use(upload.single('file'), async (req, res, next)=>{
-    try {
-        
-    } catch (error) {
-        next(error)
-    }
-});
+// app.use('/upload',upload.single('file'), async (req, res, next)=>{
+//     try {
 
-app.use(errorHandler)
+//     } catch (error) {
+//         next(error)
+//     }
+// });
 
-app.listen(PORT, ()=>{
-    console.log("==> Server run on port : ",  PORT)
+errorHandler(app)
+
+
+
+app.listen(PORT, () => {
+  console.log("==> Server run on port : ", PORT);
 });
