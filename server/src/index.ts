@@ -5,6 +5,7 @@ import cors from "cors";
 import morgan from "morgan";
 import errorHandler from "./errors";
 import apiRouter from './api/index'
+import './db/mongo/index.db'
 
 const PORT = 3000;
 

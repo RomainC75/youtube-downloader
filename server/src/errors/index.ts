@@ -2,7 +2,7 @@ import { Request, Response, NextFunction } from "express";
 
 export default function errorHandler(app: any) {
   
-  app.use((_, res: Response) => {
+  app.use((_: Request, res: Response) => {
     res.status(404).json({ errorMessage: "This route does not exist" });
   });
 

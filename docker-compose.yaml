@@ -31,7 +31,7 @@ services:
     
   server:
     build: ./server
-    command: sh -c "until curl -s http://rabbitmq:15672 > /dev/null; do sleep 2; done && npm start"
+    command: sh -c "until curl -s http://rabbitmq:15672 > /dev/null; do sleep 2; done && npm run dev"
     environment:
       - PORT=${SERVER_PORT}
       - RABBIT_HOSTNAME=${RABBIT_HOSTNAME}
@@ -50,28 +50,28 @@ services:
     ports:
       - ${SERVER_PORT}:${SERVER_PORT}
 
-  worker:
-    build: ./worker
-    environment:
-      - SERVER_URL=http://server:${SERVER_PORT}
-      - RABBIT_HOSTNAME=${RABBIT_HOSTNAME}
-      - RABBIT_USERNAME=${RABBIT_USERNAME}
-      - RABBIT_PASSWORD=${RABBIT_PASSWORD}
-    volumes:
-      - ./worker/src:/app/src
-      - /var/run/docker.sock:/var/run/docker.sock
-    cap_add:
-      - NET_ADMIN
-    devices:
-      - /dev/net/tun:/dev/net/tun
-    privileged: true
-    depends_on:
-      rabbitmq:
-        condition: service_healthy
-    deploy:
-      mode: replicated
-      replicas: 5
-      endpoint_mode: vip
+  # worker:
+  #   build: ./worker
+  #   environment:
+  #     - SERVER_URL=http://server:${SERVER_PORT}
+  #     - RABBIT_HOSTNAME=${RABBIT_HOSTNAME}
+  #     - RABBIT_USERNAME=${RABBIT_USERNAME}
+  #     - RABBIT_PASSWORD=${RABBIT_PASSWORD}
+  #   volumes:
+  #     - ./worker/src:/app/src
+  #     - /var/run/docker.sock:/var/run/docker.sock
+  #   cap_add:
+  #     - NET_ADMIN
+  #   devices:
+  #     - /dev/net/tun:/dev/net/tun
+  #   privileged: true
+  #   depends_on:
+  #     rabbitmq:
+  #       condition: service_healthy
+  #   deploy:
+  #     mode: replicated
+  #     replicas: 5
+  #     endpoint_mode: vip
     
 
 

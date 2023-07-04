@@ -23,9 +23,23 @@ router.get('/infos', async( req: Request, res: Response, next: NextFunction )=>{
             next(errors); return;
         }
         
-        const infos = await ytdl.getInfo(req.body.url);
-        res.status(200).json(infos);
+        const infos = await ytdl.getBasicInfo(req.body.url);
+        res.status(200).json(infos.player_response.streamingData.formats[0]);
+
+    } catch (error){ 
+        next(error);
+    }
+})
+
+router.get('/download', async( req: Request, res: Response, next: NextFunction )=>{
+    try {
+        // const ans = await Video.create({url:req.body.url})
+        // publishToQueue('ytDownload', req.body.url, ans._id.toString())
+        res.status(200).json({
+            message : 'done'
+        })
     } catch (error) {
+        console.log("=> error ")
         next(error)
     }
 })
