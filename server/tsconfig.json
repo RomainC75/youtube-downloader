@@ -19,6 +19,8 @@
     "typeRoots": [
       "./@types",
     ],
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true
   },
   "include": [
     "./*.js",

@@ -11,6 +11,7 @@ export default function errorHandler(app: any) {
     if (!res.headersSent) {
       res.status(500).json({
         errorMessage: "Internal server error. Check the server console",
+        err
       });
     }
   });
