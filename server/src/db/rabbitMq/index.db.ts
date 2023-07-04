@@ -1,24 +1,43 @@
-const amqp = require('amqplib/callback_api');
+import amqp, {Connection} from 'amqplib/callback_api';
 
 const HOSTNAME = process.env.RABBIT_HOSTNAME
 const RABBIT_USERNAME = process.env.RABBIT_USERNAME
 const RABBIT_PASSWORD = process.env.RABBIT_PASSWORD
+const RABBIT_FULL_URL = `amqp://${RABBIT_USERNAME}:${RABBIT_PASSWORD}@${HOSTNAME}`
 
 console.log("==> rabbitmq name : ", HOSTNAME)
-const mainQueueName = "main"
+console.log("==> rabbitmq name : ", RABBIT_FULL_URL)
 
-let ch=null
+type TQueueName = 'downloadQueue' | 'other'
 
-amqp.connect(`amqp://${RABBIT_USERNAME}:${RABBIT_PASSWORD}@${HOSTNAME}`, function (err, conn) {
-   conn.createChannel(function (err, channel) {
-      ch = channel;
-      channel.assertQueue(mainQueueName, {
+let ch: null | amqp.Channel = null
+
+amqp.connect(RABBIT_FULL_URL, (errorConnect: Error, connection: Connection) => {
+    if (errorConnect) {
+      console.log('Error connecting to RabbitMQ: ', errorConnect)
+      return
+    }
+
+    connection.createChannel((errorChannel, channel) => {
+      if (errorChannel) {
+        console.log('Error creating channel: ', errorChannel)
+        return
+      }
+
+      ch = channel
+      channel.assertQueue('downloadQueue', {
         durable: true
       });
-   });
-});
+      console.log('Connected to RabbitMQ')
+    })
+  })
 
-module.exports = {
-    ch,
-    amqp
+export async function publishToQueue (queueName: TQueueName, url, id){
+    if(!ch){
+        return;
+    }
+    const val = JSON.stringify({url,id})
+    console.log("'= val ", val)
+    return ch.sendToQueue(queueName, Buffer.from(val))
 }
+
