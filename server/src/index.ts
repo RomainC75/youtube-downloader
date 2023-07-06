@@ -1,6 +1,5 @@
 import express, { Request, Response, NextFunction } from "express";
 import bodyParser from "body-parser";
-import upload from "./utils/multer.utils";
 import cors from "cors";
 import morgan from "morgan";
 import errorHandler from "./errors";
