@@ -1,5 +1,6 @@
+import { consumeExchange } from '../..//db/rabbitMq/index.db';
 import { Router, Request, Response, NextFunction } from 'express';
-import 
+
 
 const router = Router()
 
@@ -12,6 +13,7 @@ const updateDataSource = () => {
 
 router.get('/:id', async(req: Request, res: Response, next: NextFunction) =>{
     try {
+        const {id} = req.params
         res.statusCode = 200;
         // !!IMPORTANT LINE
         res.setHeader("Access-Control-Allow-Origin", "*");
@@ -19,11 +21,15 @@ router.get('/:id', async(req: Request, res: Response, next: NextFunction) =>{
         res.setHeader("connection", "keep-alive");
         res.setHeader("Content-Type", "text/event-stream");
 
-        setInterval(() => {
-            updateDataSource()
-            const data = JSON.stringify({ ticker: dataSource });
-            res.write(`id: ${(new Date()).toLocaleTimeString()}\ndata: ${data}\n\n`);
-        }, 1000);
+        // setInterval(() => {
+        //     updateDataSource()
+        //     const data = JSON.stringify({ ticker: dataSource });
+        //     console.log("=> data : ", data)
+        //     res.write(`id: ${(new Date()).toLocaleTimeString()}\ndata: ${data}\n\n`);
+        // }, 1000);
+
+        consumeExchange('downloadProgress', id, res)
+
     } catch (error) {
         
     }
