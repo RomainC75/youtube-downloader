@@ -41,6 +41,7 @@ services:
       - MONGO_PASSWORD=${MONGODB_PASSWORD}
       - MONGO_PORT=${MONGO_PORT}
       - MONGO_HOST=${MONGODB_HOST}
+      - UPLOAD_TOKEN=${UPLOAD_TOKEN}
     volumes:
       - ./server/src:/app/src
       - ./server/uploads:/app/uploads
@@ -50,28 +51,29 @@ services:
     ports:
       - ${SERVER_PORT}:${SERVER_PORT}
 
-  # worker:
-  #   build: ./worker
-  #   environment:
-  #     - SERVER_URL=http://server:${SERVER_PORT}
-  #     - RABBIT_HOSTNAME=${RABBIT_HOSTNAME}
-  #     - RABBIT_USERNAME=${RABBIT_USERNAME}
-  #     - RABBIT_PASSWORD=${RABBIT_PASSWORD}
-  #   volumes:
-  #     - ./worker/src:/app/src
-  #     - /var/run/docker.sock:/var/run/docker.sock
-  #   cap_add:
-  #     - NET_ADMIN
-  #   devices:
-  #     - /dev/net/tun:/dev/net/tun
-  #   privileged: true
-  #   depends_on:
-  #     rabbitmq:
-  #       condition: service_healthy
-  #   deploy:
-  #     mode: replicated
-  #     replicas: 5
-  #     endpoint_mode: vip
+  worker:
+    build: ./worker
+    environment:
+      - SERVER_URL=http://server:${SERVER_PORT}
+      - RABBIT_HOSTNAME=${RABBIT_HOSTNAME}
+      - RABBIT_USERNAME=${RABBIT_USERNAME}
+      - RABBIT_PASSWORD=${RABBIT_PASSWORD}
+      - UPLOAD_TOKEN=${UPLOAD_TOKEN}
+    volumes:
+      - ./worker/src:/app/src
+      - /var/run/docker.sock:/var/run/docker.sock
+    cap_add:
+      - NET_ADMIN
+    devices:
+      - /dev/net/tun:/dev/net/tun
+    privileged: true
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+    # deploy:
+    #   mode: replicated
+    #   replicas: 5
+    #   endpoint_mode: vip
     
 
 

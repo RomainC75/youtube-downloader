@@ -2,13 +2,14 @@ FROM node:slim
 # FROM debian:sid-slim
 # FROM node:latest
 
-RUN apt-get update && apt-get install -y \
-
+RUN apt-get update && apt-get install -y 
 
 WORKDIR /app
 
 COPY package*.json .
 COPY tsconfig.json .
+
+RUN mkdir data
 
 RUN npm install
 
@@ -16,4 +17,4 @@ RUN npm install
 
 COPY . .
 
-CMD [ "npm", "run", "start" ]
+CMD [ "npm", "run", "dev" ]
