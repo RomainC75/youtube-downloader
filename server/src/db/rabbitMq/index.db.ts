@@ -79,4 +79,14 @@ export async function consumeExchange(exchangeName: string, id: string, res: Res
   );
 }
 
+export async function getChannel(): Promise<amqp.Channel>{
+  return new Promise((resolve, reject)=>{
+    if(!ch){
+      reject()
+      return;
+    }
+    resolve(ch)
+  })
+}
+
 

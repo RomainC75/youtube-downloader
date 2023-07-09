@@ -31,3 +31,26 @@ export async function getYtvideo (id: string, link: string, format: string, chan
         download.pipe(fs.createWriteStream(outputFilePath));
     })
 }
+
+export async function fakeGetYtvideo (id: string, link: string, format: string, channel: amqp.Channel ): Promise<IgetYtvideo>{
+    let i=0
+    return new Promise(async (resolve, reject)=>{
+        try {
+            channel.assertExchange(id, 'fanout', {
+                durable: false
+              });
+            console.log("==> beginning")
+            const intervaleId = setInterval(()=>{
+                if(i>1000){
+                    clearInterval(intervaleId)
+                    resolve({filePath: "fake"})
+                }
+                console.log("=> ", i, "===",id, link, format)
+                channel.publish(id, '', Buffer.from(JSON.stringify({id,percent: i})));
+                i++
+            },1000)
+        } catch (error) {
+            reject()
+        }
+    })
+}

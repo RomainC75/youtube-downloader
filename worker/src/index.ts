@@ -1,7 +1,7 @@
 import amqp from 'amqplib/callback_api';
 import fsp from 'fs/promises';
 
-import { getYtvideo } from "./utils/ytdl.utils";
+import { fakeGetYtvideo, getYtvideo } from "./utils/ytdl.utils";
 import { sendFileToServer } from './utils/file.utils';
 
 const RABBIT_HOSTNAME = process.env.RABBIT_HOSTNAME;
@@ -42,7 +42,7 @@ amqp.connect(FULL_URL, function(error0, connection) {
                     console.log("======================")
                     console.log("==> ", url, id, format)
 
-                    const {filePath} = await getYtvideo(id, url, format, channel);
+                    const {filePath} = await fakeGetYtvideo(id, url, format, channel);
                     
                     await sendFileToServer(id, format)
                     // console.log("==> DONE !!!!!!!!!!!", ans);
