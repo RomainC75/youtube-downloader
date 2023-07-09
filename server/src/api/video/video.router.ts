@@ -46,7 +46,8 @@ router.get('/download', async( req: Request, res: Response, next: NextFunction )
         }
         
         const ans = await Download.create( {...req.body} )
-        const isAdded = await publishToQueue('downloadQueue', req.body.url, ans._id.toString())
+        const isAdded = await publishToQueue( 'downloadQueue', req.body.url, ans._id.toString() )
+        
         if(!isAdded){
             res.status(400).json({message : "not added"})
         }

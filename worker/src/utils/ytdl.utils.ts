@@ -8,12 +8,12 @@ export async function getYtvideo (id: string, link: string, channel: amqp.Channe
         console.log("=> ", outputFilePath)
 
         const infos = await ytdl.getBasicInfo(link)
-        console.log('==> infos : ', infos)
+        // console.log('==> infos : ', infos)
         const download = ytdl(link, { filter: 'audioonly', quality: 'highest' });
 
         download.on('progress', (_, downloaded: number, total: number) => {
             const percent = (downloaded / total) * 100;
-            console.log(`Downloaded: ${percent.toFixed(2)}%`);
+            // console.log(`Downloaded: ${percent.toFixed(2)}%`);
             channel.publish('downloadProgress', '', Buffer.from(JSON.stringify({id,percent})));
         });
         download.on('end', () => {

@@ -6,7 +6,7 @@ import errorHandler from "./errors";
 import apiRouter from './api/index';
 import './db/mongo/index.db'
 
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 
 const app = express();
 
@@ -16,14 +16,6 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 app.use('/', express.static('public'));
-
-// app.use('/upload',upload.single('file'), async (req, res, next)=>{
-//     try {
-
-//     } catch (error) {
-//         next(error)
-//     }
-// });
 
 app.use('/api', apiRouter)
 
