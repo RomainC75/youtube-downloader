@@ -1,0 +1,15 @@
+<h1>Youtube Downloader</h1>
+
+<form [formGroup]="form">
+  <div class="form-group">
+    <label for="url">Titre</label>
+    <input id="url" type="text" formControlName="url" />
+  </div>
+  <div class="action-buttons">
+    <button type="submit" (click)="onSubmitForm()">Enregistrer</button>
+</div>
+</form>
+
+<div class="face-snap-card" *ngIf="isValid$ | async as isValid">
+  <p>the email is not valid !</p>
+</div>

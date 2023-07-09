@@ -16,7 +16,7 @@ router.get('/', ( req: Request, res: Response, next: NextFunction )=>{
     }
 })
 
-router.get('/infos', async( req: Request, res: Response, next: NextFunction )=>{
+router.post('/infos', async( req: Request, res: Response, next: NextFunction )=>{
     try {
         const getVideoDto = new GetVideoDto();
         getVideoDto.url = req.body.url;
