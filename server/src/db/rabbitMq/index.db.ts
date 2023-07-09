@@ -51,11 +51,11 @@ amqp.connect(RABBIT_FULL_URL, (errorConnect: Error, connection: Connection) => {
     })
   })
 
-export async function publishToQueue (queueName: TQueueName, url: string, id: string){
+export async function publishToQueue (queueName: TQueueName, url: string, id: string, format: string){
     if(!ch){
         return;
     }
-    const val = JSON.stringify({url,id})
+    const val = JSON.stringify({url,id, format})
     console.log("'= val ", val)
     return ch.sendToQueue(queueName, Buffer.from(val))
 }

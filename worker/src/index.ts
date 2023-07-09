@@ -1,4 +1,5 @@
 import amqp from 'amqplib/callback_api';
+import fsp from 'fs/promises';
 
 import { getYtvideo } from "./utils/ytdl.utils";
 import { sendFileToServer } from './utils/file.utils';
@@ -37,11 +38,15 @@ amqp.connect(FULL_URL, function(error0, connection) {
             if(Math.random()<0.5){
                 try {
                     console.log( "==> content : ", JSON.parse(msg.content.toString()) );
-                    const {url, id} = JSON.parse( msg.content.toString() );
-                    console.log("==> ", url, id)
-                    await getYtvideo(id, url, channel);
-                    await sendFileToServer(id)
+                    const {url, id, format} = JSON.parse( msg.content.toString() );
+                    console.log("======================")
+                    console.log("==> ", url, id, format)
+
+                    const {filePath} = await getYtvideo(id, url, format, channel);
+                    
+                    await sendFileToServer(id, format)
                     // console.log("==> DONE !!!!!!!!!!!", ans);
+                    await fsp.unlink(filePath)
                     channel.ack(msg);
                 } catch (error) {
                     console.log("==> error :::: ", error);
