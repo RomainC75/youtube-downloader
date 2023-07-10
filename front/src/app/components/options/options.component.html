@@ -1,12 +1,12 @@
 <p>options works!</p>
 <p>{{title}}</p>
-
-<select name="" id="">
-    <option value="video">video</option>
-    <option value="mp3">mp3</option>
-</select>
-
-<button (click)="download()">download</button>
+<form [formGroup]="form" (ngSubmit)="submit()">
+    <select name="format" id="format">
+        <option value="video">video</option>
+        <option value="mp3">mp3</option>
+    </select>
+    <button type="submit">download</button>
+</form>
 
 
 <div> 
