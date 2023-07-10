@@ -27,7 +27,8 @@ router.post('/infos', async( req: Request, res: Response, next: NextFunction )=>
         }
         
         const infos = await ytdl.getBasicInfo(req.body.url);
-        res.status(200).json(infos.player_response.streamingData.formats[0]);
+        // res.status(200).json(infos.player_response.streamingData.formats[0]);
+        res.status(200).json(infos);
 
     } catch (error){ 
         next(error);

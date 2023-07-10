@@ -6,10 +6,20 @@
     <input id="url" type="text" formControlName="url" />
   </div>
   <div class="action-buttons">
-    <button type="submit" (click)="onSubmitForm()">Enregistrer</button>
+    <button type="submit" (click)="onSubmitForm()" [disabled]="isValid$ | async">Enregistrer</button>
 </div>
 </form>
 
 <div class="face-snap-card" *ngIf="isValid$ | async as isValid">
-  <p>the email is not valid !</p>
+  <p class="">the email is not valid !</p>
+</div>
+
+<div *ngIf="options$ | async as options">
+
+  <div>
+    <p>YEAH</p>
+    <!-- <p>{{options.related_videos[0].title}}</p> -->
+    <app-options title={{options.videoDetails.title}} url={{options.videoDetails.embed.iframeUrl} thumbnail={{options.videoDetails.thumbnails[0].url}}></app-options>
+    <!-- <img src={{options.formats[0].}} alt=""> -->
+  </div>
 </div>
