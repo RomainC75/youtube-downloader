@@ -21,13 +21,9 @@ export class OptionsComponent implements OnInit {
       format: [null]
     })
   }
-
-  download(){
-    console.log("==> ", this.title, this.url)
-  }
-
-  submit(){
-    
+  
+  submit(){ 
+    console.log("==> DOWNLOAD : ", this.title, this.url)
     console.log("= value : ", this.form)
   }
 }
