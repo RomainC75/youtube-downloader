@@ -35,7 +35,7 @@ router.post('/infos', async( req: Request, res: Response, next: NextFunction )=>
     }
 })
 
-router.get('/download', async( req: Request, res: Response, next: NextFunction )=>{
+router.post('/download', async( req: Request, res: Response, next: NextFunction )=>{
     try {
         const downloadVideoDto = new DownloadVideoDto()
         downloadVideoDto.url = req.body.url
@@ -53,7 +53,8 @@ router.get('/download', async( req: Request, res: Response, next: NextFunction )
             res.status(400).json({message : "not added"})
         }
         res.status(200).json({
-            message : 'done'
+            message : 'done',
+            id: ans._id.toString()
         })
     } catch (error) {
         console.log("=> error ")
